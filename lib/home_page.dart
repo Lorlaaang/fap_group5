@@ -61,85 +61,174 @@ class HomePage extends StatelessWidget {
           // Content
           Column(
             children: [
-              // AppBar
+              // Header with Back Button
               Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.symmetric(vertical: 12),
                 color: Colors.green,
-                child: Center(
-                  child: Text(
-                    'BABY CHIME',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'BikePark',
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                  ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          'BABY CHIME',
+                          style: TextStyle(
+                            fontSize: 32, // Increased font size
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontFamily: 'BikePark',
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Invisible icon button for symmetry
+                    SizedBox(width: 48),
+                  ],
                 ),
               ),
+              SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final category = categories[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategoryPage(category: category),
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: category.color,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: category.color,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Category Info
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  category.name,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                        ],
+                      ),
+                      child: Stack(
+                        clipBehavior: Clip.none, // Allow image to overflow
+                        children: [
+                          // Category Info
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          category.name,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          category.description,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white70,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  category.description,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white70,
+                                  SizedBox(width: 80),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              // Buttons
+                              Row(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PlaceholderPage(
+                                            title: 'Learn: ${category.name}',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Learn',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            // Category Image
-                            Image.asset(
+                                  SizedBox(width: 10),
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PlaceholderPage(
+                                            title: 'Quiz: ${category.name}',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Colors.white, width: 2),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Quiz',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          // Category Image
+                          Positioned(
+                            right: 0,
+                            top: -10, // Adjusted from -15 to -10 to prevent cutoff
+                            child: Image.asset(
                               category.image,
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.contain,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -153,22 +242,22 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class CategoryPage extends StatelessWidget {
-  final Category category;
+// Placeholder Page for Routing
+class PlaceholderPage extends StatelessWidget {
+  final String title;
 
-  const CategoryPage({required this.category});
+  const PlaceholderPage({required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(category.name),
-        backgroundColor: category.color,
+        title: Text(title),
       ),
       body: Center(
         child: Text(
-          'Welcome to the ${category.name} category!',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          '$title Page Coming Soon!',
+          style: TextStyle(fontSize: 18),
         ),
       ),
     );
