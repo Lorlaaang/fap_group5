@@ -10,16 +10,66 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
   int _currentIndex = 0;
   final AudioPlayer _audioPlayer = AudioPlayer();
   final List<Map<String, String>> _instruments = [
-    {'name': 'Guitar', 'image': 'assets/guitar_image.png', 'sound': 'assets/audio/guitar.mp3', 'spelling': 'assets/audio/guitar_spelling.mp3'},
-    {'name': 'Piano', 'image': 'assets/piano_image.png', 'sound': 'assets/audio/piano.mp3', 'spelling': 'assets/audio/piano_spelling.mp3'},
-    {'name': 'Drum', 'image': 'assets/drum_image.png', 'sound': 'assets/audio/drum.mp3', 'spelling': 'assets/audio/drum_spelling.mp3'},
-    {'name': 'Violin', 'image': 'assets/violin_image.png', 'sound': 'assets/audio/violin.mp3', 'spelling': 'assets/audio/violin_spelling.mp3'},
-    {'name': 'Flute', 'image': 'assets/flute_image.png', 'sound': 'assets/audio/flute.mp3', 'spelling': 'assets/audio/flute_spelling.mp3'},
-    {'name': 'Trumpet', 'image': 'assets/trumpet_image.png', 'sound': 'assets/audio/trumpet.mp3', 'spelling': 'assets/audio/trumpet_spelling.mp3'},
-    {'name': 'Saxophone', 'image': 'assets/saxophone_image.png', 'sound': 'assets/audio/saxophone.mp3', 'spelling': 'assets/audio/saxophone_spelling.mp3'},
-    {'name': 'Harp', 'image': 'assets/harp_image.png', 'sound': 'assets/audio/harp.mp3', 'spelling': 'assets/audio/harp_spelling.mp3'},
-    {'name': 'Cello', 'image': 'assets/cello_image.png', 'sound': 'assets/audio/cello.mp3', 'spelling': 'assets/audio/cello_spelling.mp3'},
-    {'name': 'Clarinet', 'image': 'assets/clarinet_image.png', 'sound': 'assets/audio/clarinet.mp3', 'spelling': 'assets/audio/clarinet_spelling.mp3'},
+    {
+      'name': 'Guitar',
+      'image': 'assets/images/instruments/guitar_image.png',
+      'sound': 'assets/audio/instruments/guitar.mp3',
+      'spelling': 'assets/audio/instruments/guitar_spelling.mp3'
+    },
+    {
+      'name': 'Piano',
+      'image': 'assets/images/instruments/piano_image.png',
+      'sound': 'assets/audio/instruments/piano.mp3',
+      'spelling': 'assets/audio/instruments/piano_spelling.mp3'
+    },
+    {
+      'name': 'Drum',
+      'image': 'assets/images/instruments/drum_image.png',
+      'sound': 'assets/audio/instruments/drum.mp3',
+      'spelling': 'assets/audio/instruments/drum_spelling.mp3'
+    },
+    {
+      'name': 'Violin',
+      'image': 'assets/images/instruments/violin_image.png',
+      'sound': 'assets/audio/instruments/violin.mp3',
+      'spelling': 'assets/audio/instruments/violin_spelling.mp3'
+    },
+    {
+      'name': 'Flute',
+      'image': 'assets/images/instruments/flute_image.png',
+      'sound': 'assets/audio/instruments/flute.mp3',
+      'spelling': 'assets/audio/instruments/flute_spelling.mp3'
+    },
+    {
+      'name': 'Trumpet',
+      'image': 'assets/images/instruments/trumpet_image.png',
+      'sound': 'assets/audio/instruments/trumpet.mp3',
+      'spelling': 'assets/audio/instruments/trumpet_spelling.mp3'
+    },
+    {
+      'name': 'Saxophone',
+      'image': 'assets/images/instruments/saxophone_image.png',
+      'sound': 'assets/audio/instruments/saxophone.mp3',
+      'spelling': 'assets/audio/instruments/saxophone_spelling.mp3'
+    },
+    {
+      'name': 'Harp',
+      'image': 'assets/images/instruments/harp_image.png',
+      'sound': 'assets/audio/instruments/harp.mp3',
+      'spelling': 'assets/audio/instruments/harp_spelling.mp3'
+    },
+    {
+      'name': 'Cello',
+      'image': 'assets/images/instruments/cello_image.png',
+      'sound': 'assets/audio/instruments/cello.mp3',
+      'spelling': 'assets/audio/instruments/cello_spelling.mp3'
+    },
+    {
+      'name': 'Clarinet',
+      'image': 'assets/images/instruments/clarinet_image.png',
+      'sound': 'assets/audio/instruments/clarinet.mp3',
+      'spelling': 'assets/audio/instruments/clarinet_spelling.mp3'
+    },
   ];
 
   @override
@@ -29,6 +79,7 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
   }
 
   void _playSound(String soundPath) async {
+    print('Playing sound: $soundPath'); // Debugging statement
     await _audioPlayer.play(DeviceFileSource(soundPath));
   }
 
