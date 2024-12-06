@@ -23,15 +23,8 @@ flutter:
 
   # Add assets section
   assets:
-    - assets/images/background.png
-    - assets/images/homepage_background.png
-    - assets/images/animals.png
-    - assets/images/shapes.png
-    - assets/images/instruments.png
-    - assets/images/colors.png
-    - assets/audio/background_music.mp3
-    - assets/audio/button_click.mp3
-
+    - assets/images/
+    - assets/audio/
   # Add fonts section
   fonts:
     - family: Poppins
