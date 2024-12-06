@@ -47,10 +47,10 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
       'spelling': 'assets/audio/instruments/trumpet_spelling.mp3'
     },
     {
-      'name': 'Saxophone',
-      'image': 'assets/images/instruments/saxophone_image.png',
-      'sound': 'assets/audio/instruments/saxophone.mp3',
-      'spelling': 'assets/audio/instruments/saxophone_spelling.mp3'
+      'name': 'Kalimba',
+      'image': 'assets/images/instruments/kalimba_image.png',
+      'sound': 'assets/audio/instruments/kalimba.mp3',
+      'spelling': 'assets/audio/instruments/kalimba_spelling.mp3'
     },
     {
       'name': 'Harp',
@@ -59,16 +59,16 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
       'spelling': 'assets/audio/instruments/harp_spelling.mp3'
     },
     {
-      'name': 'Cello',
-      'image': 'assets/images/instruments/cello_image.png',
-      'sound': 'assets/audio/instruments/cello.mp3',
-      'spelling': 'assets/audio/instruments/cello_spelling.mp3'
+      'name': 'Maracas',
+      'image': 'assets/images/instruments/maracas_image.png',
+      'sound': 'assets/audio/instruments/maracas.mp3',
+      'spelling': 'assets/audio/instruments/maracas_spelling.mp3'
     },
     {
-      'name': 'Clarinet',
-      'image': 'assets/images/instruments/clarinet_image.png',
-      'sound': 'assets/audio/instruments/clarinet.mp3',
-      'spelling': 'assets/audio/instruments/clarinet_spelling.mp3'
+      'name': 'Xylophone',
+      'image': 'assets/images/instruments/xylophone_image.png',
+      'sound': 'assets/audio/instruments/xylophone.mp3',
+      'spelling': 'assets/audio/instruments/xylophone_spelling.mp3'
     },
   ];
 
