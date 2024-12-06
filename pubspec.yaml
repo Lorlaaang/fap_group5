@@ -27,6 +27,7 @@ flutter:
     - assets/audio/
     - assets/images/instruments/
     - assets/audio/instruments/
+    - assets/audio/instruments/guitar_spelling.mp3
   # Add fonts section
   fonts:
     - family: Poppins

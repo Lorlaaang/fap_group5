@@ -83,18 +83,30 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
       // Stop any currently playing audio
       await _audioPlayer.stop();
 
-      // Play the audio using AssetSource
-      Source source = AssetSource(soundPath.replaceFirst('assets/', ''));
-      await _audioPlayer.play(source);
+      // Remove 'assets/' prefix since we're using AssetSource
+      final assetPath = soundPath.replaceAll('assets/', '');
+      print('Attempting to play file: $assetPath');
 
-      print('Successfully played sound: $soundPath');
+      // Play using AssetSource without result checking
+      await _audioPlayer.play(AssetSource(assetPath));
+
+      // Add listener for completion
+      _audioPlayer.onPlayerComplete.listen((event) {
+        print('Audio playback completed');
+      });
+
     } catch (e) {
-      print('Error playing sound: $e');
+      print('Error type: ${e.runtimeType}');
+      print('Error details: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error playing audio: $e')),
+        SnackBar(
+          content: Text('Unable to play audio'),
+          duration: Duration(seconds: 2),
+        ),
       );
     }
   }
+
 
   void _nextCard() {
     setState(() {
