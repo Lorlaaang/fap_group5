@@ -1,44 +1,40 @@
+import 'package:fap_group5/flashcards/flashcards_instruments.dart';
+import 'package:fap_group5/flashcards/flashcards_shapes.dart';
+import 'package:fap_group5/quiz/quiz_animals.dart';
+import 'package:fap_group5/quiz/quiz_colors.dart';
+import 'package:fap_group5/quiz/quiz_instruments.dart';
+import 'package:fap_group5/quiz/quiz_shapes.dart';
 import 'package:flutter/material.dart';
-
-class Category {
-  final String name;
-  final String description;
-  final String image;
-  final Color color;
-
-  Category({
-    required this.name,
-    required this.description,
-    required this.image,
-    required this.color,
-  });
-}
+import 'category.dart';
+import 'flashcards/flashcards_animals.dart';
+import 'quiz/quiz_colors.dart';
+import 'flashcards/flashcards_colors.dart';
 
 class HomePage extends StatelessWidget {
   final List<Category> categories = [
     Category(
-      name: 'Animals',
-      description: 'Meet your favorite animals friends!',
-      image: 'assets/images/animals.png',
-      color: Colors.orange,
+      'Animals',
+      'Meet your favorite animals friends!',
+      'assets/images/animals.png',
+      Colors.orange,
     ),
     Category(
-      name: 'Shapes',
-      description: 'Learn all about shapes!',
-      image: 'assets/images/shapes.png',
-      color: Colors.green,
+      'Shapes',
+      'Learn all about shapes!',
+      'assets/images/shapes.png',
+      Colors.green,
     ),
     Category(
-      name: 'Instruments',
-      description: 'Explore musical instruments!',
-      image: 'assets/images/instruments.png',
-      color: Colors.pink,
+      'Instruments',
+      'Explore musical instruments!',
+      'assets/images/instruments.png',
+      Colors.pink,
     ),
     Category(
-      name: 'Colors',
-      description: 'Discover the world of colors!',
-      image: 'assets/images/colors.png',
-      color: Colors.blue,
+       'Colors',
+        'Discover the world of colors!',
+        'assets/images/colors.png',
+        Colors.blue,
     ),
   ];
 
@@ -97,7 +93,7 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
-                    final category = categories[index];
+                    final Category category = categories[index];
                     return Container(
                       margin: EdgeInsets.only(bottom: 20),
                       padding: EdgeInsets.all(15),
@@ -154,14 +150,39 @@ class HomePage extends StatelessWidget {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PlaceholderPage(
-                                            title: 'Learn: ${category.name}',
+                                      if(category.name == 'Animals') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FlashcardsAnimalsPage(),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
+                                      else if(category.name == 'Instruments') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FlashcardsInstrumentsPage(),
+                                          ),
+                                        );
+                                      }
+                                      else if(category.name == 'Shapes') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FlashcardsShapesPage(),
+                                          ),
+                                        );
+                                      }
+                                      else if(category.name == 'Colors') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FlashcardsColorsPage(),
+                                          ),
+                                        );
+                                      }
+
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.white,
@@ -185,14 +206,38 @@ class HomePage extends StatelessWidget {
                                   SizedBox(width: 10),
                                   OutlinedButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PlaceholderPage(
-                                            title: 'Quiz: ${category.name}',
+                                      if(category.name == 'Animals') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => QuizAnimalsPage(),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      }
+                                      else if(category.name == 'Instruments') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => QuizInstrumentsPage(),
+                                          ),
+                                        );
+                                      }
+                                      else if(category.name == 'Shapes') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => QuizShapesPage(),
+                                          ),
+                                        );
+                                      }
+                                      else if(category.name == 'Colors') {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => QuizColorsPage(),
+                                          ),
+                                        );
+                                      }
                                     },
                                     style: OutlinedButton.styleFrom(
                                       side: BorderSide(color: Colors.white, width: 2),
