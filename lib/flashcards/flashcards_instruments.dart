@@ -72,22 +72,52 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     },
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    // Remove the previous method that doesn't exist
+  }
+
   void _playSound(String soundPath) async {
-    print('Playing sound: $soundPath'); // Debugging statement
-    await _audioPlayer.play(DeviceFileSource(soundPath));
+    try {
+      // Stop any currently playing audio
+      await _audioPlayer.stop();
+
+      // Play the audio using AssetSource
+      Source source = AssetSource(soundPath.replaceFirst('assets/', ''));
+      await _audioPlayer.play(source);
+
+      print('Successfully played sound: $soundPath');
+    } catch (e) {
+      print('Error playing sound: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error playing audio: $e')),
+      );
+    }
   }
 
   void _nextCard() {
     setState(() {
       _currentIndex = (_currentIndex + 1) % _instruments.length;
     });
+    // Optional: Automatically play sound when moving to next card
+    _playSound(_instruments[_currentIndex]['sound']!);
   }
 
   void _previousCard() {
     setState(() {
       _currentIndex = (_currentIndex - 1 + _instruments.length) % _instruments.length;
     });
+    // Optional: Automatically play sound when moving to previous card
+    _playSound(_instruments[_currentIndex]['sound']!);
   }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
