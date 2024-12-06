@@ -72,12 +72,6 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     },
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _playSound(_instruments[_currentIndex]['sound']!);
-  }
-
   void _playSound(String soundPath) async {
     print('Playing sound: $soundPath'); // Debugging statement
     await _audioPlayer.play(DeviceFileSource(soundPath));
@@ -86,14 +80,12 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
   void _nextCard() {
     setState(() {
       _currentIndex = (_currentIndex + 1) % _instruments.length;
-      _playSound(_instruments[_currentIndex]['sound']!);
     });
   }
 
   void _previousCard() {
     setState(() {
       _currentIndex = (_currentIndex - 1 + _instruments.length) % _instruments.length;
-      _playSound(_instruments[_currentIndex]['sound']!);
     });
   }
 
