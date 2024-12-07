@@ -211,9 +211,10 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
               ),
             ),
           ),
+          // Main Content
           Column(
             children: [
-              // Header with Back Button
+              // Header
               Container(
                 padding: EdgeInsets.symmetric(vertical: 12),
                 color: Colors.green,
@@ -240,22 +241,21 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
                   ],
                 ),
               ),
+              // Content
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Question Section
-                      // Update the Question Section in quiz_instruments.dart:
-                      Container(
-                        child: Text(
-                          'SELECT THE CORRECT IMAGE',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.deepPurple,
-                            fontFamily: 'Poppins',
-                          ),
+                      Text(
+                        'SELECT THE CORRECT IMAGE',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.deepPurple,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                       Padding(
@@ -267,9 +267,7 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
                                 Icons.volume_up_outlined,
                                 size: 30,
                               ),
-                              onPressed: () {
-                                _playQuestionSound();
-                              },
+                              onPressed: _playQuestionSound,
                             ),
                             SizedBox(width: 8.0),
                             Text(
@@ -283,11 +281,10 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
                           ],
                         ),
                       ),
-                      // Grid of Options
+                      // Grid Section
                       Expanded(
                         child: GridView.builder(
-                          gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
