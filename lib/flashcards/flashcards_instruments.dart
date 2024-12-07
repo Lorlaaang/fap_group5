@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../home_page.dart';
 import '../quiz/quiz_instruments.dart';
+import '../models/instrument.dart';
 
 class FlashcardsInstrumentsPage extends StatefulWidget {
   const FlashcardsInstrumentsPage({super.key});
@@ -14,104 +15,71 @@ class FlashcardsInstrumentsPage extends StatefulWidget {
 class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
   int _currentIndex = 0;
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final List<Map<String, String>> _instruments = [
-    {
-      'name': 'Guitar',
-      'image': 'assets/images/instruments/guitar_image.png',
-      'sound': 'assets/audio/instruments/guitar.mp3',
-      'spelling': 'assets/audio/instruments/guitar_spelling.mp3'
-    },
-    {
-      'name': 'Piano',
-      'image': 'assets/images/instruments/piano_image.png',
-      'sound': 'assets/audio/instruments/piano.mp3',
-      'spelling': 'assets/audio/instruments/piano_spelling.mp3'
-    },
-    {
-      'name': 'Drum',
-      'image': 'assets/images/instruments/drum_image.png',
-      'sound': 'assets/audio/instruments/drum.mp3',
-      'spelling': 'assets/audio/instruments/drum_spelling.mp3'
-    },
-    {
-      'name': 'Violin',
-      'image': 'assets/images/instruments/violin_image.png',
-      'sound': 'assets/audio/instruments/violin.mp3',
-      'spelling': 'assets/audio/instruments/violin_spelling.mp3'
-    },
-    {
-      'name': 'Flute',
-      'image': 'assets/images/instruments/flute_image.png',
-      'sound': 'assets/audio/instruments/flute.mp3',
-      'spelling': 'assets/audio/instruments/flute_spelling.mp3'
-    },
-    {
-      'name': 'Trumpet',
-      'image': 'assets/images/instruments/trumpet_image.png',
-      'sound': 'assets/audio/instruments/trumpet.mp3',
-      'spelling': 'assets/audio/instruments/trumpet_spelling.mp3'
-    },
-    {
-      'name': 'Kalimba',
-      'image': 'assets/images/instruments/kalimba_image.png',
-      'sound': 'assets/audio/instruments/kalimba.mp3',
-      'spelling': 'assets/audio/instruments/kalimba_spelling.mp3'
-    },
-    {
-      'name': 'Harp',
-      'image': 'assets/images/instruments/harp_image.png',
-      'sound': 'assets/audio/instruments/harp.mp3',
-      'spelling': 'assets/audio/instruments/harp_spelling.mp3'
-    },
-    {
-      'name': 'Maracas',
-      'image': 'assets/images/instruments/maracas_image.png',
-      'sound': 'assets/audio/instruments/maracas.mp3',
-      'spelling': 'assets/audio/instruments/maracas_spelling.mp3'
-    },
-    {
-      'name': 'Xylophone',
-      'image': 'assets/images/instruments/xylophone_image.png',
-      'sound': 'assets/audio/instruments/xylophone.mp3',
-      'spelling': 'assets/audio/instruments/xylophone_spelling.mp3'
-    },
+  final List<Instrument> _instruments = [
+    // String Instruments
+    StringInstrument(
+        'Guitar',
+        'assets/images/instruments/guitar_image.png',
+        'assets/audio/instruments/guitar.mp3',
+        'assets/audio/instruments/guitar_spelling.mp3'),
+    StringInstrument(
+        'Piano',
+        'assets/images/instruments/piano_image.png',
+        'assets/audio/instruments/piano.mp3',
+        'assets/audio/instruments/piano_spelling.mp3'),
+    StringInstrument(
+        'Violin',
+        'assets/images/instruments/violin_image.png',
+        'assets/audio/instruments/violin.mp3',
+        'assets/audio/instruments/violin_spelling.mp3'),
+    StringInstrument(
+        'Harp',
+        'assets/images/instruments/harp_image.png',
+        'assets/audio/instruments/harp.mp3',
+        'assets/audio/instruments/harp_spelling.mp3'),
+
+    // Wind Instruments
+    WindInstrument(
+        'Flute',
+        'assets/images/instruments/flute_image.png',
+        'assets/audio/instruments/flute.mp3',
+        'assets/audio/instruments/flute_spelling.mp3'),
+    WindInstrument(
+        'Trumpet',
+        'assets/images/instruments/trumpet_image.png',
+        'assets/audio/instruments/trumpet.mp3',
+        'assets/audio/instruments/trumpet_spelling.mp3'),
+
+    // Percussion Instruments
+    PercussionInstrument(
+        'Drum',
+        'assets/images/instruments/drum_image.png',
+        'assets/audio/instruments/drum.mp3',
+        'assets/audio/instruments/drum_spelling.mp3'),
+    PercussionInstrument(
+        'Kalimba',
+        'assets/images/instruments/kalimba_image.png',
+        'assets/audio/instruments/kalimba.mp3',
+        'assets/audio/instruments/kalimba_spelling.mp3'),
+    PercussionInstrument(
+        'Maracas',
+        'assets/images/instruments/maracas_image.png',
+        'assets/audio/instruments/maracas.mp3',
+        'assets/audio/instruments/maracas_spelling.mp3'),
+    PercussionInstrument(
+        'Xylophone',
+        'assets/images/instruments/xylophone_image.png',
+        'assets/audio/instruments/xylophone.mp3',
+        'assets/audio/instruments/xylophone_spelling.mp3'),
   ];
 
+// Update initState
   @override
   void initState() {
     super.initState();
-    // Add post-frame callback to ensure context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _playSound(_instruments[_currentIndex]['sound']!);
+      _playInstrumentSound(_instruments[_currentIndex]);
     });
-  }
-
-  void _playSound(String soundPath) async {
-    try {
-      // Stop any currently playing audio
-      await _audioPlayer.stop();
-
-      // Remove 'assets/' prefix since we're using AssetSource
-      final assetPath = soundPath.replaceAll('assets/', '');
-      print('Attempting to play file: $assetPath');
-
-      // Play using AssetSource without result checking
-      await _audioPlayer.play(AssetSource(assetPath));
-
-      // Add listener for completion
-      _audioPlayer.onPlayerComplete.listen((event) {
-        print('Audio playback completed');
-      });
-    } catch (e) {
-      print('Error type: ${e.runtimeType}');
-      print('Error details: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to play audio'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
   }
 
   // Add this method to the _FlashcardsInstrumentsPageState class
@@ -122,7 +90,8 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Congratulations!'),
-          content: const Text('Congratulations on learning all the instruments!'),
+          content:
+          const Text('Congratulations on learning all the instruments!'),
           actions: [
             TextButton(
               child: const Text('Go to Home'),
@@ -151,7 +120,7 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     );
   }
 
-// Update _nextCard() method
+// Update _nextCard
   void _nextCard() {
     if (_currentIndex == _instruments.length - 1) {
       _showCompletionDialog();
@@ -161,17 +130,47 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     setState(() {
       _currentIndex = (_currentIndex + 1) % _instruments.length;
     });
-    // Optional: Automatically play sound when moving to next card
-    _playSound(_instruments[_currentIndex]['sound']!);
+    _playInstrumentSound(_instruments[_currentIndex]);
   }
 
+// Update _previousCard
   void _previousCard() {
     setState(() {
       _currentIndex =
           (_currentIndex - 1 + _instruments.length) % _instruments.length;
     });
-    // Optional: Automatically play sound when moving to previous card
-    _playSound(_instruments[_currentIndex]['sound']!);
+    _playInstrumentSound(_instruments[_currentIndex]);
+  }
+
+  void _playInstrumentSound(Instrument instrument) async {
+    try {
+      await instrument.playSound(_audioPlayer);
+    } catch (e) {
+      print('Error type: ${e.runtimeType}');
+      print('Error details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unable to play audio'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+// Add this method to _FlashcardsInstrumentsPageState
+  void _playSpellingSound(Instrument instrument) async {
+    try {
+      await instrument.playSpelling(_audioPlayer);
+    } catch (e) {
+      print('Error type: ${e.runtimeType}');
+      print('Error details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unable to play audio'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -254,15 +253,15 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Column(
+                                  child: // Replace the build method UI part with:
+                                  Column(
                                     children: [
-                                      Image.asset(instrument[
-                                      'image']!), // Replace with your image path
+                                      Image.asset(instrument.imagePath),
                                       const SizedBox(height: 10),
                                       Text(
-                                        instrument['name']!,
+                                        instrument.name,
                                         style: const TextStyle(
-                                          fontSize: 48, // Increased font size
+                                          fontSize: 48,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'BikePark',
                                           color: blueColor,
@@ -277,15 +276,14 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                                             icon: const Icon(Icons.spellcheck,
                                                 color: blueColor),
                                             onPressed: () {
-                                              _playSound(
-                                                  instrument['spelling']!);
+                                              _playSpellingSound(instrument);
                                             },
                                           ),
                                           IconButton(
                                             icon: const Icon(Icons.volume_up,
                                                 color: blueColor),
                                             onPressed: () {
-                                              _playSound(instrument['sound']!);
+                                              _playInstrumentSound(instrument);
                                             },
                                           ),
                                         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
+import '../flashcards/flashcards_instruments.dart';
+import '../home_page.dart';
 
 class QuizInstrumentsPage extends StatefulWidget {
   const QuizInstrumentsPage({super.key});
@@ -167,11 +169,11 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
           ),
           actions: [
             TextButton(
-              child: Text('Go to Home'),
+              child: const Text('Go to Home'),
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  '/',
+                  MaterialPageRoute(builder: (context) => HomePage()),
                       (route) => false,
                 );
               },
@@ -179,8 +181,12 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
             TextButton(
               child: Text('Review Instruments'),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context); // Return to flashcards
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FlashcardsInstrumentsPage(),
+                  ),
+                );
               },
             ),
           ],
@@ -240,18 +246,42 @@ class _QuizInstrumentsPageState extends State<QuizInstrumentsPage> {
                   child: Column(
                     children: [
                       // Question Section
-                      Text(
-                        'WHICH INSTRUMENT IS PLAYING?',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.deepPurple,
-                          fontFamily: 'Poppins',
+                      // Update the Question Section in quiz_instruments.dart:
+                      Container(
+                        child: Text(
+                          'SELECT THE CORRECT IMAGE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.deepPurple,
+                            fontFamily: 'Poppins',
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.volume_up, size: 40),
-                        onPressed: _playQuestionSound,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(
+                                Icons.volume_up_outlined,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                _playQuestionSound();
+                              },
+                            ),
+                            SizedBox(width: 8.0),
+                            Text(
+                              currentQuestion['name']!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       // Grid of Options
                       Expanded(
