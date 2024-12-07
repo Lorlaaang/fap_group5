@@ -9,6 +9,7 @@ import 'category.dart';
 import 'flashcards/flashcards_animals.dart';
 import 'quiz/quiz_colors.dart';
 import 'flashcards/flashcards_colors.dart';
+import 'fun_facts_page.dart'; // Import the Fun Facts Page
 
 class HomePage extends StatelessWidget {
   final List<Category> categories = [
@@ -31,10 +32,10 @@ class HomePage extends StatelessWidget {
       Colors.pink,
     ),
     Category(
-       'Colors',
-        'Discover the world of colors!',
-        'assets/images/colors.png',
-        Colors.blue,
+      'Colors',
+      'Discover the world of colors!',
+      'assets/images/colors.png',
+      Colors.blue,
     ),
   ];
 
@@ -94,186 +95,200 @@ class HomePage extends StatelessWidget {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final Category category = categories[index];
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: category.color,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        clipBehavior: Clip.none, // Allow image to overflow
-                        children: [
-                          // Category Info
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          category.name,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          category.description,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white70,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 80),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              // Buttons
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      if(category.name == 'Animals') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => FlashcardsAnimalsPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Instruments') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => FlashcardsInstrumentsPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Shapes') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => FlashcardsShapesPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Colors') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => FlashcardsColorsPage(),
-                                          ),
-                                        );
-                                      }
-
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 30,
-                                        vertical: 10,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Learn',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      if(category.name == 'Animals') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => QuizAnimalsPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Instruments') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => QuizInstrumentsPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Shapes') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => QuizShapesPage(),
-                                          ),
-                                        );
-                                      }
-                                      else if(category.name == 'Colors') {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => QuizColorsPage(),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(color: Colors.white, width: 2),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 30,
-                                        vertical: 10,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Quiz',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          // Category Image
-                          Positioned(
-                            right: 0,
-                            top: -10, // Adjusted from -15 to -10 to prevent cutoff
-                            child: Image.asset(
-                              category.image,
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.contain,
+                    return GestureDetector(
+                      onTap: () {
+                        if (category.name == 'Animals') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FunFactsPage(), // Navigate to Fun Facts
                             ),
-                          ),
-                        ],
+                          );
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: category.color,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Stack(
+                          clipBehavior: Clip.none, // Allow image to overflow
+                          children: [
+                            // Category Info
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            category.name,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            category.description,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white70,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 80),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                // Buttons
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        if (category.name == 'Animals') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FlashcardsAnimalsPage(),
+                                            ),
+                                          );
+                                        } else if (category.name == 'Instruments') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FlashcardsInstrumentsPage(),
+                                            ),
+                                          );
+                                        } else if (category.name == 'Shapes') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FlashcardsShapesPage(),
+                                            ),
+                                          );
+                                        } else if (category.name == 'Colors') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FlashcardsColorsPage(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Learn',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    OutlinedButton(
+                                      onPressed: () {
+                                        if (category.name == 'Animals') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QuizAnimalsPage(),
+                                            ),
+                                          );
+                                        } else if (category.name ==
+                                            'Instruments') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QuizInstrumentsPage(),
+                                            ),
+                                          );
+                                        } else if (category.name == 'Shapes') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QuizShapesPage(),
+                                            ),
+                                          );
+                                        } else if (category.name == 'Colors') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QuizColorsPage(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        side: BorderSide(color: Colors.white, width: 2),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Quiz',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            // Category Image
+                            Positioned(
+                              right: 0,
+                              top: -10, // Adjusted from -15 to -10 to prevent cutoff
+                              child: Image.asset(
+                                category.image,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -282,28 +297,6 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-// Placeholder Page for Routing
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const PlaceholderPage({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Text(
-          '$title Page Coming Soon!',
-          style: TextStyle(fontSize: 18),
-        ),
       ),
     );
   }
