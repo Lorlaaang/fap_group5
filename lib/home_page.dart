@@ -63,10 +63,15 @@ class HomePage extends StatelessWidget {
                 color: Colors.green,
                 child: Row(
                   children: [
+                    // Update the back button onPressed in HomePage
                     IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/', // Assuming '/' is your landing page route
+                              (route) => false,
+                        );
                       },
                     ),
                     Expanded(
