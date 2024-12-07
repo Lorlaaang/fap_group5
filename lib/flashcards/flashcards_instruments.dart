@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../home_page.dart';
+import '../quiz/quiz_instruments.dart';
 
 class FlashcardsInstrumentsPage extends StatefulWidget {
+  const FlashcardsInstrumentsPage({super.key});
+
   @override
-  _FlashcardsInstrumentsPageState createState() => _FlashcardsInstrumentsPageState();
+  _FlashcardsInstrumentsPageState createState() =>
+      _FlashcardsInstrumentsPageState();
 }
 
 class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
@@ -75,7 +80,10 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
   @override
   void initState() {
     super.initState();
-    // Remove the previous method that doesn't exist
+    // Add post-frame callback to ensure context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _playSound(_instruments[_currentIndex]['sound']!);
+    });
   }
 
   void _playSound(String soundPath) async {
@@ -94,12 +102,11 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
       _audioPlayer.onPlayerComplete.listen((event) {
         print('Audio playback completed');
       });
-
     } catch (e) {
       print('Error type: ${e.runtimeType}');
       print('Error details: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Unable to play audio'),
           duration: Duration(seconds: 2),
         ),
@@ -107,8 +114,50 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     }
   }
 
+  // Add this method to the _FlashcardsInstrumentsPageState class
+  void _showCompletionDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Congratulations!'),
+          content: const Text('Congratulations on learning all the instruments!'),
+          actions: [
+            TextButton(
+              child: const Text('Go to Home'),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                      (route) => false,
+                );
+              },
+            ),
+            TextButton(
+              child: const Text('Go to Quiz'),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QuizInstrumentsPage()),
+                      (route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
+// Update _nextCard() method
   void _nextCard() {
+    if (_currentIndex == _instruments.length - 1) {
+      _showCompletionDialog();
+      return;
+    }
+
     setState(() {
       _currentIndex = (_currentIndex + 1) % _instruments.length;
     });
@@ -118,7 +167,8 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
 
   void _previousCard() {
     setState(() {
-      _currentIndex = (_currentIndex - 1 + _instruments.length) % _instruments.length;
+      _currentIndex =
+          (_currentIndex - 1 + _instruments.length) % _instruments.length;
     });
     // Optional: Automatically play sound when moving to previous card
     _playSound(_instruments[_currentIndex]['sound']!);
@@ -130,11 +180,11 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final instrument = _instruments[_currentIndex];
-    final blueColor = Colors.lightBlue; // Adjust this color to match the desired blue
+    const blueColor =
+        Colors.lightBlue; // Adjust this color to match the desired blue
 
     return Scaffold(
       body: Stack(
@@ -143,9 +193,9 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/background.png'),
+                image: AssetImage('assets/images/no_clouds_bg.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -154,17 +204,17 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
             children: [
               // Header with Back Button
               Container(
-                padding: EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 color: Colors.green,
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Center(
                         child: Text(
                           'BABY CHIME',
@@ -178,11 +228,11 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                       ),
                     ),
                     // Invisible icon button for symmetry
-                    SizedBox(width: 48),
+                    const SizedBox(width: 48),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: Center(
                   child: Column(
@@ -198,18 +248,20 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: blueColor, width: 2),
+                                  border:
+                                  Border.all(color: blueColor, width: 2),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     children: [
-                                      Image.asset(instrument['image']!), // Replace with your image path
+                                      Image.asset(instrument[
+                                      'image']!), // Replace with your image path
                                       const SizedBox(height: 10),
                                       Text(
                                         instrument['name']!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 48, // Increased font size
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'BikePark',
@@ -218,16 +270,20 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                                       ),
                                       const SizedBox(height: 10),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.spellcheck, color: blueColor),
+                                            icon: const Icon(Icons.spellcheck,
+                                                color: blueColor),
                                             onPressed: () {
-                                              _playSound(instrument['spelling']!);
+                                              _playSound(
+                                                  instrument['spelling']!);
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.volume_up, color: blueColor),
+                                            icon: const Icon(Icons.volume_up,
+                                                color: blueColor),
                                             onPressed: () {
                                               _playSound(instrument['sound']!);
                                             },
@@ -247,12 +303,13 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.arrow_back, color: blueColor, size: 42),
+                            icon: const Icon(Icons.arrow_back,
+                                color: blueColor, size: 42),
                             onPressed: _previousCard,
                           ),
                           Text(
                             '${_currentIndex + 1} / ${_instruments.length}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 42, // Increased font size
                               fontWeight: FontWeight.bold,
                               fontFamily: 'BikePark',
@@ -260,7 +317,8 @@ class _FlashcardsInstrumentsPageState extends State<FlashcardsInstrumentsPage> {
                             ),
                           ),
                           IconButton(
-                            icon: Icon(Icons.arrow_forward, color: blueColor, size: 42),
+                            icon: const Icon(Icons.arrow_forward,
+                                color: blueColor, size: 42),
                             onPressed: _nextCard,
                           ),
                         ],
