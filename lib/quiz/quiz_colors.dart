@@ -75,6 +75,9 @@ class _QuizColorsState extends State<QuizColors> {
   void initState() {
     super.initState();
     randomizedCards = quizBrain.getRandomizedItems(quizBank);
+    for (int i = 0; i < randomizedCards.length; i++) {
+      cardColors[i] = Colors.blue; // Initialize all cards with transparent color
+    }
   }
 
   List<Icon> scoreKeeper = [];
@@ -82,19 +85,21 @@ class _QuizColorsState extends State<QuizColors> {
   int score = 0;
 
   final List<Quiz_Item> quizBank = [
-    Quiz_Item('RED', 'assets/images/red.png', 'audio/red.mp3'),
-    Quiz_Item('BLUE', 'assets/images/blue.png', 'audio/blue.mp3'),
-    Quiz_Item('YELLOW', 'assets/images/yellow.png', 'audio/yellow.mp3'),
-    Quiz_Item('GREEN', 'assets/images/green.png', 'audio/green.mp3'),
-    Quiz_Item('ORANGE', 'assets/images/orange.png', 'audio/orange.mp3'),
-    Quiz_Item('PURPLE', 'assets/images/purple.png', 'audio/purple.mp3'),
-    Quiz_Item('PINK', 'assets/images/pink.png', 'audio/pink.mp3'),
-    Quiz_Item('BROWN', 'assets/images/brown.png', 'audio/brown.mp3'),
-    Quiz_Item('BLACK', 'assets/images/black.png', 'audio/black.mp3'),
-    Quiz_Item('GRAY', 'assets/images/gray.png', 'audio/gray.mp3'),
+    Quiz_Item('RED', 'assets/images/colors/red.png', 'audio/colors/red_audio.mp3'),
+    Quiz_Item('BLUE', 'assets/images/colors/blue.png', 'audio/colors/blue_audio.mp3'),
+    Quiz_Item('YELLOW', 'assets/images/colors/yellow.png', 'audio/colors/yellow_audio.mp3'),
+    Quiz_Item('GREEN', 'assets/images/colors/green.png', 'audio/colors/green_audio.mp3'),
+    Quiz_Item('ORANGE', 'assets/images/colors/orange.png', 'audio/colors/orange_audio.mp3'),
+    Quiz_Item('PURPLE', 'assets/images/colors/purple.png', 'audio/colors/purple_audio.mp3'),
+    Quiz_Item('PINK', 'assets/images/colors/pink.png', 'audio/colors/pink_audio.mp3'),
+    Quiz_Item('BROWN', 'assets/images/colors/brown.png', 'audio/colors/brown_audio.mp3'),
+    Quiz_Item('BLACK', 'assets/images/colors/black.png', 'audio/colors/black_audio.mp3'),
+    Quiz_Item('GRAY', 'assets/images/colors/gray.png', 'audio/colors/gray_audio.mp3'),
   ];
 
   List<Quiz_Item> randomizedCards = [];
+
+  Map<int, Color> cardColors = {};
 
   void playAudio(String audioPath) {
     final player = AudioPlayer();
@@ -168,133 +173,90 @@ class _QuizColorsState extends State<QuizColors> {
           ),
           Flexible(
             child: GridView.builder(
-              itemCount: 4,
+              itemCount: randomizedCards.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 1,
-                childAspectRatio: 0.8,
-              ),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Quiz_Item selectedCard = randomizedCards[index];
-                    String selectedImageName = selectedCard.imageName;
+              crossAxisCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 1,
+              childAspectRatio: 0.8,
+            ),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                Quiz_Item selectedCard = randomizedCards[index];
+                String selectedImageName = selectedCard.imageName;
 
+                setState(() {
+                  bool isCorrect = checkAnswer(selectedImageName);
+
+                  // Update only the clicked card's color
+                  cardColors[index] = isCorrect ? Colors.green : Colors.red;
+
+                  Future.delayed(Duration(milliseconds: 500), () {
                     setState(() {
-                      // Check if the selected card is correct
-                      checkAnswer(selectedImageName);
-
-                      // Move to the next question if not finished
                       if (!quizBrain.isFinished(quizBank)) {
-                        quizBrain.nextQuestion(quizBank); // Increment the question
-                        randomizedCards = quizBrain.getRandomizedItems(quizBank); // Generate new options
-                      } else {
-                        // Restart the quiz if finished
-                        scoreKeeper = [];
-                        quizBrain.restartQuiz();
-                        randomizedCards = quizBrain.getRandomizedItems(quizBank);
-                        // Show the alert after a delay
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Finished'),
-                              content: Text('You scored $score / 10.'),
-                              actions: [
-                                TextButton(
-                                  child: Center(
-                                  child: Text(
-                                    'Home Page',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context); // Close the alert
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => HomePage()),
-                                  );
-                                }, // Allow button width to fit the text
-                              ),
-                                TextButton(
-                                  child: Center(
-                                    child: Text(
-                                    'Review Colors',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                    Navigator.pop(context); // Close the alert
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => FlashcardsColorsPage()),
-                                    );
-                                  },
-                                ),
-                              ]
-                            );
-                          }
-                        );
-                        Future.delayed(Duration(seconds: 1), () {
-                          AlertDialog(
+                      quizBrain.nextQuestion(quizBank); // Increment the question
+                      randomizedCards = quizBrain.getRandomizedItems(quizBank);
+
+                      // Reset all cards to default blue border
+                      for (int i = 0; i < randomizedCards.length; i++) {
+                        cardColors[i] = Colors.blue;
+                      }
+                    } else {
+                      // Handle quiz completion (show dialog, restart logic)
+                      scoreKeeper = [];
+                      quizBrain.restartQuiz();
+                      randomizedCards = quizBrain.getRandomizedItems(quizBank);
+                      // Show the alert
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
                             title: Text('Finished'),
                             content: Text('You scored $score / 10.'),
                             actions: [
                               TextButton(
-                                child: Center(
-                                  child: Text(
-                                    'Home Page',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
+                                child: Text('Home Page'),
                                 onPressed: () {
-                                  Navigator.pop(context); // Close the alert
+                                  Navigator.pop(context);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => HomePage()),
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
                                   );
-                                }, // Allow button width to fit the text
+                                },
                               ),
                               TextButton(
-                                child: Center(
-                                  child: Text(
-                                    'Review Colors',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
+                                child: Text('Review Colors'),
                                 onPressed: () {
-                                  Navigator.pop(context); // Close the alert
+                                  Navigator.pop(context);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => FlashcardsColorsPage()),
+                                    MaterialPageRoute(
+                                      builder: (context) => FlashcardsColorsPage(),
+                                    ),
                                   );
                                 },
                               ),
                             ],
                           );
-                        });
-                      }
-                    });
-                  },
-                  child: Container(
-                    child: cardContainer(randomizedCards[index].imagePath),
-                  ),
-                );
-              },
-            ),
-          ),
+                        },
+                      );
+                    }
+                  });
+                });
+              });
+            },
+                child: cardContainer(
+                  randomizedCards[index].imagePath,
+                  cardColors[index]!, // Use the dynamic color from the map
+                ),
+            );
+        },
+      ),
+    ),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -313,7 +275,7 @@ class _QuizColorsState extends State<QuizColors> {
   }
 }
 
-Widget cardContainer(String imagePath) {
+Widget cardContainer(String imagePath, Color borderColor) {
   return Card(
     elevation: 4, // Slight elevation for shadow
     margin: const EdgeInsets.all(9), // Margin around the card
@@ -321,7 +283,7 @@ Widget cardContainer(String imagePath) {
       padding: const EdgeInsets.all(9), // Inner padding for content
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue, width: 2), // Border with blue color
+          border: Border.all(color: borderColor, width: 5), // Border with blue color
           borderRadius: BorderRadius.circular(8), // Rounded corners
         ),
         child: Center(
