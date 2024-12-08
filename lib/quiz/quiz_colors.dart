@@ -195,13 +195,58 @@ class _QuizColorsState extends State<QuizColors> {
                         quizBrain.restartQuiz();
                         randomizedCards = quizBrain.getRandomizedItems(quizBank);
                         // Show the alert after a delay
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Finished'),
+                              content: Text('You scored $score / 10.'),
+                              actions: [
+                                TextButton(
+                                  child: Center(
+                                  child: Text(
+                                    'Home Page',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context); // Close the alert
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => HomePage()),
+                                  );
+                                }, // Allow button width to fit the text
+                              ),
+                                TextButton(
+                                  child: Center(
+                                    child: Text(
+                                    'Review Colors',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                    Navigator.pop(context); // Close the alert
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => FlashcardsColorsPage()),
+                                    );
+                                  },
+                                ),
+                              ]
+                            );
+                          }
+                        );
                         Future.delayed(Duration(seconds: 1), () {
-                          Alert(
-                            context: context,
-                            title: 'Finished',
-                            desc: 'You scored $score / 10.',
-                            buttons: [
-                              DialogButton(
+                          AlertDialog(
+                            title: Text('Finished'),
+                            content: Text('You scored $score / 10.'),
+                            actions: [
+                              TextButton(
                                 child: Center(
                                   child: Text(
                                     'Home Page',
@@ -217,10 +262,9 @@ class _QuizColorsState extends State<QuizColors> {
                                     context,
                                     MaterialPageRoute(builder: (context) => HomePage()),
                                   );
-                                },
-                                width: null, // Allow button width to fit the text
+                                }, // Allow button width to fit the text
                               ),
-                              DialogButton(
+                              TextButton(
                                 child: Center(
                                   child: Text(
                                     'Review Colors',
@@ -237,14 +281,12 @@ class _QuizColorsState extends State<QuizColors> {
                                     MaterialPageRoute(builder: (context) => FlashcardsColorsPage()),
                                   );
                                 },
-                                width: null, // Allow button width to fit the text
                               ),
                             ],
-                          ).show();
+                          );
                         });
                       }
                     });
-
                   },
                   child: Container(
                     child: cardContainer(randomizedCards[index].imagePath),
