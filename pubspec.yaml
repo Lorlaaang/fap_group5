@@ -27,8 +27,12 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+    - assets/images/animals/
+    - assets/images/shapes/
     - assets/images/instruments/
+    - assets/audio/animals/
     - assets/audio/instruments/
+    - assets/audio/shapes/
     - assets/audio/instruments/guitar_spelling.mp3
   # Add fonts section
   fonts:
